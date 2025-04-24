@@ -1,29 +1,49 @@
+import { useEffect, useState } from "react";
+import "../components/App.css";
+import Description from "./Description/Description";
+import Feedback from "./Feedback/Feedback";
+import Options from "./Options/Options";
+import Notification from "./Notification/Notification";
 
-import Profile from "./Profile/Profile.jsx";
-import userData from "../userData.json";
-import FriendList from "./FriendList/FriendList.jsx";
-import friends from "../friends.json";
-import "../components/App.css"
-import TransactionHistory from "./TransactionHistory/TransactionHistory.jsx";
-import transactions from "../transactions.json"
+const App = () => {
+  const [marks, setMarks] = useState(() => {
+    const dataFromLS = localStorage.getItem("savedData");
+    if (dataFromLS !== null) {
+      return JSON.parse(dataFromLS);
+    }
+    return {
+      good: 0,
+      neutral: 0,
+      bad: 0,
+    };
+  });
 
-const App =()=> {
-  
-      return (
+  useEffect(() => {
+    localStorage.setItem("savedData", JSON.stringify(marks));
+  }, [marks]);
 
+  const totalFeedback = marks.good + marks.neutral + marks.bad;
+  const positiveFeedback = Math.round((marks.good / totalFeedback) * 100);
+
+  const updateFeedback = (feedbackType) => {
+    setMarks({ ...marks, [feedbackType]: marks[feedbackType] + 1 });
+  };
+
+  return (
     <>
-      <Profile
-        name={userData.username}
-        tag={userData.tag}
-        location={userData.location}
-        image={userData.avatar}
-        stats={userData.stats}
+      <Description />
+      <Options
+        updateFeedback={updateFeedback}
+        totalFeedback={totalFeedback}
+        setMarks={setMarks}
       />
-<FriendList friends={friends} />
-<TransactionHistory items={transactions} />
+      {totalFeedback ? (
+        <Feedback marks={marks} totalFeedback={totalFeedback} positiveFeedback={positiveFeedback} />
+      ) : (
+        <Notification />
+      )}
     </>
   );
 };
 
-export default App
-
+export default App;
