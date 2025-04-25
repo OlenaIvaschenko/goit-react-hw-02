@@ -29,13 +29,17 @@ const App = () => {
     setMarks({ ...marks, [feedbackType]: marks[feedbackType] + 1 });
   };
 
+  const setEmptyMarks=()=>{
+    setMarks({good: 0,neutral: 0,bad: 0});
+  }
+
   return (
     <>
       <Description />
       <Options
         updateFeedback={updateFeedback}
         totalFeedback={totalFeedback}
-        setMarks={setMarks}
+        setEmptyMarks={setEmptyMarks}
       />
       {totalFeedback ? (
         <Feedback marks={marks} totalFeedback={totalFeedback} positiveFeedback={positiveFeedback} />

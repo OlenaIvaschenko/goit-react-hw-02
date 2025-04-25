@@ -3,7 +3,7 @@ import css from "./Options.module.css"
 
 
 
-const Options=({updateFeedback, totalFeedback, setMarks})=>{
+const Options=({updateFeedback, totalFeedback, setEmptyMarks})=>{
 
     const handleClick=(e)=>{
         updateFeedback(e.target.textContent.toLowerCase())
@@ -15,7 +15,7 @@ const Options=({updateFeedback, totalFeedback, setMarks})=>{
             <li ><button onClick={handleClick} type="button">Good</button></li>
             <li><button onClick={handleClick} type="button">Neutral</button></li>
             <li><button onClick={handleClick} type="button">Bad</button></li>
-            {totalFeedback>0&&<li><button type="button" onClick={()=>{setMarks({good: 0,neutral: 0,bad: 0})}}>Reset</button></li>}
+            {totalFeedback>0&&<li><button type="button" onClick={setEmptyMarks}>Reset</button></li>}
         </ul>
 
     )
